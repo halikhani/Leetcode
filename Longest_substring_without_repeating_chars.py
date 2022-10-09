@@ -20,29 +20,14 @@ class Solution(object):
         :rtype: int
         """
         
-        def check_size(s, max_size):
-            if len(s) > max_size:
-                return len(s)
-            return max_size
-        
-        def get_not_repeated_sub(s, occur_idx):
-            if occur_idx == len(s) - 1 :
-                return ''
+        current_s = ''
+        max_sub_len = 0
+        for c in s:
+            if c not in current_s:
+                current_s += c
             else:
-                return s[occur_idx + 1:]
-        
-        current_substring = ''
-        max_len = 0
-        
-        for i in s:  
-            if i not in current_substring:
-                current_substring += i
-                
-            else:
-                occur_idx = current_substring.rfind(i)
-                current_substring = get_not_repeated_sub(current_substring, occur_idx)
-                current_substring += i
-            
-            max_len = check_size(current_substring, max_len)
-        
-        return max_len
+                occur_idx = current_s.rfind(c)
+                current_s = current_s[occur_idx+1:]
+                current_s += c
+            max_sub_len = max(max_sub_len, len(current_s))
+        return max_sub_len

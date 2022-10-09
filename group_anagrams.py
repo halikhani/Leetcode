@@ -1,54 +1,61 @@
-# fix this not completed
 class Solution(object):
     
-    def gen_dict(self, str):
+    def gen_dict(self, word):
+        if len(word) == 0:
+            return dict()
         result = dict()
-        for s in str:
-            if s in result.keys():
-                result[s] += 1
-            else:
-                result[s] = 1
+        for i in range(26):
+            result[i] = 0
+        for c in word:
+            idx = ord(c) - 97
+            result[idx] += 1
         return result
-        # result = set()
-        # for s in str:
-        #     result.add(s)
-        # return result
-
-    def is_anagram(self, str1, str2):
-        dict_1 = self.gen_dict(str1)
-        dict_2 = self.gen_dict(str2)
-
-        if dict_1 == dict_2:
-            return True
-        # if dict_1 == dict_2:
-        #     return True
-        else:
+    
+    def is_equal(self, dict_1, dict_2):
+        if len(dict_1) == 0 or len(dict_2) == 0:
             return False
+        for i in range(26):
+            if dict_1[i] == dict_2[i]:
+                continue
+            else:
+                return False
+        return True
+    
     
     def groupAnagrams(self, strs):
         """
         :type strs: List[str]
         :rtype: List[List[str]]
         """
-        anagrams = dict()
-
+        groups = []
+        empty_s_flag = False
         for s in strs:
-            if not bool(anagrams):
-                anagrams[s] = [s]
+            dict_s = self.gen_dict(s)
+            if len(dict_s) == 0:
+                if not empty_s_flag:
+                    groups.append([''])
+                    empty_s_flag = True
+                else:
+                    for g in groups:
+                        g_rep = g[0]
+                        if g_rep == '':
+                            g.append('')
+                continue
+            if len(groups) == 0:
+                groups.append([s])
             else:
-                is_in = False
-                for k in anagrams.keys():
-                    if self.is_anagram(k, s):
-                        anagrams[k].append(s)
-                        is_in = True
-                if not is_in:
-                    anagrams[s] = [s]
+                found = False
+                for g in groups:
+                    g_rep = g[0]
+                    rep_dict = self.gen_dict(g_rep)
+                    if self.is_equal(rep_dict, dict_s):
+                        g.append(s)
+                        found = True
+                if not found:
+                    groups.append([s])
+              
+        return groups
                 
-        
-        # make list of anagrams
-        result = []
-        for v in anagrams.values():
-            result.append(v)
-        return result
             
-        
+            
+            
