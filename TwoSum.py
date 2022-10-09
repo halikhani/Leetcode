@@ -25,15 +25,17 @@
 
 class Solution(object):
     def twoSum(self, nums, target):
-        result = []
-        hashmap = {}
-        for idx, val in enumerate(nums):
-            res = target - val
-            if res in hashmap.values():
-                idx1 = hashmap.keys()[hashmap.values().index(res)]
-                idx2 = idx
-                result.append(idx1)
-                result.append(idx2)
-                return result
-            else:
-                hashmap[idx] = val
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        
+        prevMap = dict() # values => index
+        
+        for i, n in enumerate(nums):
+            diff = target - n
+            if diff in prevMap:
+                return [prevMap[diff], i]
+            prevMap[n] = i
+        
