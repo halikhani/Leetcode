@@ -19,43 +19,33 @@
 # -105 <= nums[i] <= 105
 
 class Solution(object):
-    
-    def twoSum(self, nums, target):
-        result = []
-        hashmap = {}
-        for idx, val in enumerate(nums):
-            res = target - val
-            if res in hashmap.values():
-                idx1 = hashmap.keys()[hashmap.values().index(res)]
-                idx2 = idx
-                result.append(idx1)
-                result.append(idx2)
-                return result
-            else:
-                hashmap[idx] = val
-        result_vals = [nums[i] for i in result]
-        # return result
-        return result_vals
-                
     def threeSum(self, nums):
         """
         :type nums: List[int]
         :rtype: List[List[int]]
         """
         result = []
-        if len(nums) < 3:
-            return result
+        nums = sorted(nums)
         
-        for idx, num in enumerate(nums):
-            target = (-1)*num
-            rem_list = nums[idx+1:]
-            found_pairs = self.twoSum(rem_list, target)
-            print(found_pairs)
-            if len(found_pairs) > 0:
-                r = found_pairs.insert(0, num)
-                result.append(r)
-        
+        for i, n in enumerate(nums):
+            # skipping elements that are same as previous ones in the list
+            if i > 0 and n == nums[i-1]:
+                continue
+            else:
+                l, r = i+1, len(nums)-1
+                while l < r:
+                    threesum = n + nums[l] + nums[r]
+                    if threesum < 0:
+                        l += 1
+                    elif threesum > 0:
+                        r -= 1
+                    else:
+                        result.append([n, nums[l], nums[r]])
+                        l += 1
+                        while nums[l] == nums[l-1] and l < r:
+                            l += 1
         return result
+            
         
         
         
