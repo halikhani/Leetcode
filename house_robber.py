@@ -26,7 +26,6 @@ class Solution:
     def rob(self, nums: List[int]) -> int:
         # if we choose first e in nums, we have to solve it for the nums[2:] and add it to nums[0]
         # if we dont choose first e in nums, we should sole it for nums[1:]
-        nums = nums[::-1]
         for i in range(len(nums)-1, -1, -1):
             if i == len(nums)-1:
                 continue
